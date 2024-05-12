@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taquin Game</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <!-- Grille de jeu -->
+    <h1>Jeu du Taquin</h1>
+    <div id="grid-container"></div>
+
+ 
+    <script>
+        // 4x4 cases (15 case numérotées + 1 vide)
+        const rows = 4; 
+        const cols = 4; 
+        
+        /**
+         * Créer un tableau de nombres aléatoires de 1 à 15 
+         * return array
+         **/
+        function randomNumbers() {
+            let numbers = []; 
+
+            // Fill the array by the numbers 
+            for (let i = 1; i <= 15; i++) {
+                numbers.push(i);
+            }
+
+            // Mix the numbers in the array (Fisher-Yates algorithm)
+            // Don't mix the first element with itself and no duplicate
+            for (let i = numbers.length - 1; i > 0; i--) {
+                // to have an aleatoire number between 0 and i 
+                // (0 to 1 -> so if i = 3 -> i+1=4 between 0 to 4)
+                const j = Math.floor(Math.random() * (i + 1));
+                // Inverser les valeurs de [numbers[i], numbers[j]]
+                //[numbers[i], numbers[j]] = [numbers[j], numbers[i]];   
+                let temp = numbers[i];
+                numbers[i] = numbers[j];
+                numbers[j] = temp;
+            }
+           
+            return numbers; 
+        }
+
+        /**
+         * Créer la matrice 
+         **/
+        function createMatrix() {
+            let matrix = []; 
+
+            let randomNums = randomNumbers();
+            let k = 0; // Index for randomNums (array)
+
+            for (let i = 0; i < rows; i++) {
+                let row = [];
+                for (let j = 0; j < cols; j++) {
+                    // last case (0)
+                    if (i === rows - 1 && j === cols - 1) {
+                        row.push(0); 
+                    } else {
+                        row.push(randomNums[k]); 
+                        k++; 
+                    }
+                }
+                matrix.push(row);
+            }
+
+            return matrix;
+        }
+
+        /**
+         * Affiche la grille en HTML 
+         **/
+        function displayGridHTML(grid) {
+            const gridContainer = document.getElementById("grid-container");
+
+            for (let i = 0; i < rows; i++) {
+                const row = document.createElement("div");
+                row.className = "row";
+
+                for (let j = 0; j < cols; j++) {
+                    // Create a new case 
+                    const cell = document.createElement("div");
+                    cell.className = "cell";
+                    // Create the number inside 
+                    cell.textContent = grid[i][j];
+
+                    // Add the case to the grid
+                    row.appendChild(cell);
+                }
+                gridContainer.appendChild(row);
+            }
+        }
+        
+
+        console.log(randomNumbers())
+
+        let matrix = createMatrix();
+        console.table(matrix);
+
+        displayGridHTML(matrix);
+
+</script>
+
+</body>
+</html>
+
+
