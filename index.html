@@ -1,25 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taquin Game</title>
+    <title>Taquin</title>
     <link rel="stylesheet" href="style.css"> 
 </head>
+
 <body>
-    <!-- Grille de jeu -->
-    <h1>Jeu du Taquin</h1>
-    <div id="grid-container"></div>
+    <!-- Game grid -->
+    <div>
+        <h1>Jeu du Taquin</h1>
+        <table>
+            <tr>
+                <td class="cell" id="cellule0" onclick="caseJouee(0)"></td>
+                <td class="cell" id="cellule1" onclick="caseJouee(1)"></td>
+                <td class="cell" id="cellule2" onclick="caseJouee(2)"></td>
+                <td class="cell" id="cellule3" onclick="caseJouee(3)"></td>
+            </tr>
+            <tr>
+                <td class="cell" id="cellule4" onclick="caseJouee(4)"></td>
+                <td class="cell" id="cellule5" onclick="caseJouee(5)"></td>
+                <td class="cell" id="cellule6" onclick="caseJouee(6)"></td>
+                <td class="cell" id="cellule7" onclick="caseJouee(7)"></td>
+            </tr>
+            <tr>
+                <td class="cell" id="cellule8" onclick="caseJouee(8)"></td>
+                <td class="cell" id="cellule9" onclick="caseJouee(9)"></td>
+                <td class="cell" id="cellule10" onclick="caseJouee(10)"></td>
+                <td class="cell" id="cellule11" onclick="caseJouee(11)"></td>
+            </tr>
+            <tr>
+                <td class="cell" id="cellule12" onclick="caseJouee(12)"></td>
+                <td class="cell" id="cellule13" onclick="caseJouee(13)"></td>
+                <td class="cell" id="cellule14" onclick="caseJouee(14)"></td>
+                <td class="cell" id="cellule15" onclick="caseJouee(15)"></td>
+            </tr>
+        </table>
+        <!-- Reset button -->
+        <button id="reset-btn" onclick="reinitialiserJeu()">Réinitialiser</button>
+    </div>
 
  
     <script>
-        // 4x4 cases (15 case numérotées + 1 vide)
-        const rows = 4; 
+        const rows = 4;
         const cols = 4; 
+        let matrix = createMatrix();
         
+        document.addEventListener('keydown',function(event){
+            processKey(event); 
+        })
+
         /**
-         * Créer un tableau de nombres aléatoires de 1 à 15 
-         * return array
+         * Crée un tableau de nombres aléatoires de 1 à 15 
+         * return array numbers
          **/
         function randomNumbers() {
             let numbers = []; 
@@ -46,11 +80,11 @@
         }
 
         /**
-         * Créer la matrice 
+         * Crée la matrice (de 0 à 15 soit 16 cases) 
+         * return array matrix
          **/
         function createMatrix() {
-            let matrix = []; 
-
+            let matrix = [];
             let randomNums = randomNumbers();
             let k = 0; // Index for randomNums (array)
 
@@ -68,41 +102,101 @@
                 matrix.push(row);
             }
 
+            console.table(matrix)
             return matrix;
         }
 
         /**
          * Affiche la grille en HTML 
+         * avec les numéros 
          **/
         function displayGridHTML(grid) {
-            const gridContainer = document.getElementById("grid-container");
-
             for (let i = 0; i < rows; i++) {
-                const row = document.createElement("div");
-                row.className = "row";
-
                 for (let j = 0; j < cols; j++) {
-                    // Create a new case 
-                    const cell = document.createElement("div");
-                    cell.className = "cell";
+                    let cell = document.getElementById("cellule" + (i*4 +j))
                     // Create the number inside 
-                    cell.textContent = grid[i][j];
-
-                    // Add the case to the grid
-                    row.appendChild(cell);
+                    if (grid[i][j] == 0) {
+                        cell.innerText = " ";
+                    } else {
+                        cell.innerText = grid[i][j];
+                    }
                 }
-                gridContainer.appendChild(row);
             }
         }
-        
 
-        console.log(randomNumbers())
+        /**
+         * Trouve la case vide (index 0 dans la matrice)
+         * retourne le numéro de la case (de 0 à 15)
+         */
+        function findSpaceEmpty() {
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    // console.log("tous les numeros de matrice" , matrix[i][j])
+                    if (matrix[i][j] == 0) {
+                        console.log("matrice i j : ", matrix[i][j])
+                        console.log('Espace vide sur la case n° ' + (i*4 +j))
+                        return (i*4 +j);
+                    }
+                }
+            }
+        }
 
-        let matrix = createMatrix();
-        console.table(matrix);
+        /**
+         * Deplace les numeros avec les fleches 
+         */
+        function processKey(event) {
+            console.log(event.key) // ArrowUp, ArrowDown, ArrowRight, ArrowLeft
 
-        displayGridHTML(matrix);
+            spaceEmpty = findSpaceEmpty(); // 15
+            
+            let i = Math.trunc(spaceEmpty/4); // 15/4 = 3 (arrondi)
+            let j = spaceEmpty % 4; // 15%4 = 3 (3*4=12 reste 3)
+            console.log("i: "+ i) // 3
+            console.log("j: "+j) // 3
 
+            switch (event.key) {
+                case 'ArrowUp':
+                    console.log('haut');
+                    if (i > 3 ) {
+                        matrix[i][j] = matrix[i + 1][j];
+                        matrix[i + 1][j] = 0;
+                    }
+                break;
+                case 'ArrowDown':
+                    console.log('bas');
+                    if (i > 0) {
+                        matrix[i][j] = matrix[i - 1][j];
+                        matrix[i - 1][j] = 0;
+                    }
+                break;
+                case 'ArrowLeft':
+                    console.log('gauche');
+                    if (j < 3) {
+                        matrix[i][j] = matrix[i][j + 1];
+                        matrix[i][j + 1] = 0;
+                    }
+                break;
+                case 'ArrowRight':
+                    console.log('droite');
+                    if (j > 0) {
+                        console.log("0 de la matrice",matrix[i][j]);
+                        matrix[i][j] = matrix[i][j - 1]; // 0 devient la case à gauche
+                        matrix[i][j - 1] = 0; // case numérotée bouge à droite // fleche
+                    }
+                break;
+                default:
+                    console.log("Aucune flèche")
+            }
+            displayGridHTML(matrix)
+
+            // completer le deplacement :
+            // deplacement à droite ne doit pas deborder de la grille (0 3)
+            // faire les 3 autres left down et up 
+        }
+   
+
+        displayGridHTML(matrix)
+      
 </script>
 
 </body>
