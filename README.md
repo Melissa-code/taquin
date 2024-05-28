@@ -82,3 +82,21 @@ i=3 j=0 : case 13 -> donc matrice[i][j] = j+1 + 12
 
 donc si on généralise, la formule est :  matrice[i][j] = j+1 + i*4
 ```
+
+
+
+## 8. Créer la fonction saveGame(matrix)
+
+- pour sauvegarder le jeu dans le local storage 
+
+
+
+## 9. Créer la fonction loadGame() 
+
+- pour réafficher le jeu depuis le local storage 
+
+
+
+## 10. Créer la fonction resetGame() 
+
+- pour réinitialiser le jeu et effacer la donnée dans le local storage 

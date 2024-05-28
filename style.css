@@ -26,5 +26,13 @@ table {
     text-align: center;
 }
 
-
+#reset-btn {
+    display: block;
+    margin: auto;
+    padding: 15px 20px;
+    border: 2px solid darkslategray;
+    border-radius: 3px;
+    background-color: darkslategray;
+    color: white;
+}
 

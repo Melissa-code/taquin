@@ -38,14 +38,14 @@
             </tr>
         </table>
         <!-- Reset button -->
-        <button id="reset-btn" onclick="reinitialiserJeu()">Réinitialiser</button>
+        <button id="reset-btn" onclick="resetGame()">Réinitialiser</button>
     </div>
 
  
     <script>
         const rows = 4;
         const cols = 4; 
-        let matrix = createMatrix();
+        let matrix = loadGame() || createMatrix();
         
         document.addEventListener('keydown',function(event){
             processKey(event); 
@@ -192,6 +192,7 @@
                 default:
                     console.log("Aucune flèche")
             }
+            saveGame(matrix);
             displayGridHTML(matrix)
 
             // Display Gagné 
@@ -227,9 +228,37 @@
             return true;
         }
 
+        /**
+         * Sauvegarde le jeu dans le local storage 
+         * même après rafraîchissement de la page 
+         **/
+        function saveGame(matrix) {
+            localStorage.setItem('taquinMatrix', JSON.stringify(matrix));
+        }
+
+         /**
+         * Récupère le jeu depuis le local storage 
+         * même après rafraîchissment de la page et l'affiche 
+         **/
+        function loadGame() {
+            const savedMatrix = localStorage.getItem('taquinMatrix');
+            //JSON.parse(savedMatrix)tconvertir cette chaîne JSON en un objet JavaScript (la matrice)
+            return savedMatrix ? JSON.parse(savedMatrix) : null;
+        }
+
+        /**
+         * Réinitialise le jeu :
+         * Vide le local storage 
+         * cree la matrice et l'affiche 
+         **/
+        function resetGame() {
+            localStorage.removeItem('taquinMatrix');
+            matrix = createMatrix();
+            displayGridHTML(matrix);
+        }
+
         displayGridHTML(matrix)
 
-        // sauver le jeu dans le local storage 
       
 </script>
 
