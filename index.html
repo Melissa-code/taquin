@@ -13,28 +13,28 @@
         <h1>Jeu du Taquin</h1>
         <table>
             <tr>
-                <td class="cell" id="cellule0" onclick="caseJouee(0)"></td>
-                <td class="cell" id="cellule1" onclick="caseJouee(1)"></td>
-                <td class="cell" id="cellule2" onclick="caseJouee(2)"></td>
-                <td class="cell" id="cellule3" onclick="caseJouee(3)"></td>
+                <td class="cell" id="cellule0"></td>
+                <td class="cell" id="cellule1"></td>
+                <td class="cell" id="cellule2"></td>
+                <td class="cell" id="cellule3"></td>
             </tr>
             <tr>
-                <td class="cell" id="cellule4" onclick="caseJouee(4)"></td>
-                <td class="cell" id="cellule5" onclick="caseJouee(5)"></td>
-                <td class="cell" id="cellule6" onclick="caseJouee(6)"></td>
-                <td class="cell" id="cellule7" onclick="caseJouee(7)"></td>
+                <td class="cell" id="cellule4"></td>
+                <td class="cell" id="cellule5"></td>
+                <td class="cell" id="cellule6"></td>
+                <td class="cell" id="cellule7"></td>
             </tr>
             <tr>
-                <td class="cell" id="cellule8" onclick="caseJouee(8)"></td>
-                <td class="cell" id="cellule9" onclick="caseJouee(9)"></td>
-                <td class="cell" id="cellule10" onclick="caseJouee(10)"></td>
-                <td class="cell" id="cellule11" onclick="caseJouee(11)"></td>
+                <td class="cell" id="cellule8"></td>
+                <td class="cell" id="cellule9"></td>
+                <td class="cell" id="cellule10"></td>
+                <td class="cell" id="cellule11"></td>
             </tr>
             <tr>
-                <td class="cell" id="cellule12" onclick="caseJouee(12)"></td>
-                <td class="cell" id="cellule13" onclick="caseJouee(13)"></td>
-                <td class="cell" id="cellule14" onclick="caseJouee(14)"></td>
-                <td class="cell" id="cellule15" onclick="caseJouee(15)"></td>
+                <td class="cell" id="cellule12"></td>
+                <td class="cell" id="cellule13"></td>
+                <td class="cell" id="cellule14"></td>
+                <td class="cell" id="cellule15"></td>
             </tr>
         </table>
         <!-- Reset button -->
@@ -86,6 +86,9 @@
         function createMatrix() {
             let matrix = [];
             let randomNums = randomNumbers();
+            console.log(randomNumbers())
+            // to test
+            //let numbers = [1,2,3,4,5,6,7,8,9,10,11,12,0,13,14,15]
             let k = 0; // Index for randomNums (array)
 
             for (let i = 0; i < rows; i++) {
@@ -96,6 +99,8 @@
                         row.push(0); 
                     } else {
                         row.push(randomNums[k]); 
+                        // to test
+                        //row.push(numbers[k]); 
                         k++; 
                     }
                 }
@@ -157,7 +162,7 @@
             switch (event.key) {
                 case 'ArrowUp':
                     console.log('haut');
-                    if (i > 3 ) {
+                    if (i < 3 ) {
                         matrix[i][j] = matrix[i + 1][j];
                         matrix[i + 1][j] = 0;
                     }
@@ -189,13 +194,42 @@
             }
             displayGridHTML(matrix)
 
-            // completer le deplacement :
-            // deplacement à droite ne doit pas deborder de la grille (0 3)
-            // faire les 3 autres left down et up 
+            // Display Gagné 
+            if (checkGrid(matrix)) {
+                console.log(matrix)
+                console.log('gagné'); 
+                alert("Gagné ! (-_-) ")
+            }
         }
-   
+        
+        /**
+         * Vérifie que la dernière case est vide (0)
+         * et que les nombres sont bien dans l'ordre (1 2 3 -> 15) 
+         **/
+        function checkGrid(matrix) {
+            for (let i = 0; i < matrix.length; i++) {
+                for (let j = 0; j < matrix[i].length; j++) {
+                    // Check last case
+                    if (i === 3 && j === 3) {
+                        if (matrix[i][j] !== 0) {
+                            console.log('false')
+                            return false;
+                        }
+                    // Check all the cases except the last one
+                    } else {
+                        if (matrix[i][j] !== (j+1 + i*4) ) {
+                        console.log('false 2: ', i, j)
+                        return false;
+                        } 
+                    }
+                }
+            }
+            return true;
+        }
 
         displayGridHTML(matrix)
+
+        // sauver le jeu dans le local storage 
       
 </script>
 

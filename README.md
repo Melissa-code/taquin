@@ -59,3 +59,26 @@ document.addEventListener('keydown', function(event){
 - Affecte les valeurs de i et j à la matrice 
 - Switch sur les fleches 
 - Déplace la case dans la direction de fleche et déplace la case 0 en sens inverse 
+
+
+
+## 7. Créer la fonction checkGrid(matrix)
+
+- Vérifie que la dernière case est vide (0)
+- Vérifie les nombres sont bien dans l'ordre (1 2 3 -> 15) 
+
+```
+i=0 et j=0 : case 1
+i=0 et j=1 : case 2
+i=0 et j=2 : case 3
+i=0 et j=3 : case 4 -> donc matrice[i][j] = j+1 +0 
+
+i=1 et j=0 : case 5 
+i=1 et j=1 : case 6 -> donc matrice[i][j] = j+1 +4
+
+i=2 et j=0 : case 9 -> donc matrice[i][j] = j+1 +8
+
+i=3 j=0 : case 13 -> donc matrice[i][j] = j+1 + 12 
+
+donc si on généralise, la formule est :  matrice[i][j] = j+1 + i*4
+```
