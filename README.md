@@ -2,8 +2,7 @@
 
 Le jeu du taquin, également appelé puzzle de 15 ou jeu de glissière, est un jeu de plateau où le joueur doit réorganiser les pièces numérotées dans l'ordre chronologique en les faisant glisser sur une grille. 
 
-Ce jeu est codé en JavaScript. 
-
+Ce jeu est codé en JavaScript. Enjoy : [Taquin](https://taquin-ten.vercel.app/)
 
 
 ## 1. Créer la function randomNumbers() 
