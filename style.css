@@ -18,6 +18,18 @@ table {
     height: 70vh;
 }
 
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-game {
+    width: 1.5rem;
+    margin-right: 1rem;
+    color: darkslategray;
+}
+
 .cell {
     width: 100px;
     height: 100px;

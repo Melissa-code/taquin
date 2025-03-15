@@ -13,19 +13,15 @@ document.addEventListener('keydown',function(event){
 function randomNumbers() {
     let numbers = []; 
 
-    // Fill the array by the numbers 
     for (let i = 1; i <= 15; i++) {
         numbers.push(i);
     }
 
-    // Mix the numbers in the array (Fisher-Yates algorithm)
-    // Don't mix the first element with itself and no duplicate
+    // Mix the numbers in the array (Fisher-Yates algorithm): don't mix the first element with itself and no duplicate
     for (let i = numbers.length - 1; i > 0; i--) {
-        // to have an aleatoire number between 0 and i 
-        // (0 to 1 -> so if i = 3 -> i+1=4 between 0 to 4)
+        // to have an aleatoire number between 0 and i (0 to 1 -> so if i = 3 -> i+1=4 between 0 to 4)
         const j = Math.floor(Math.random() * (i + 1));
-        // Inverse values [numbers[i], numbers[j]]
-        //[numbers[i], numbers[j]] = [numbers[j], numbers[i]];   
+        // Inverse values [numbers[i], numbers[j]]: [numbers[i], numbers[j]] = [numbers[j], numbers[i]];   
         let temp = numbers[i];
         numbers[i] = numbers[j];
         numbers[j] = temp;
@@ -67,7 +63,6 @@ function displayGridHTML(grid) {
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             let cell = document.getElementById("cellule" + (i*4 +j))
-            // Create the number inside 
             if (grid[i][j] == 0) {
                 cell.innerText = " ";
             } else {
@@ -131,7 +126,6 @@ function processKey(event) {
     saveGame(matrix);
     displayGridHTML(matrix)
 
-    // Display Gagné 
     if (checkGrid(matrix)) {
         console.log('gagné'); 
         alert("Gagné ! (-_-) ")
@@ -178,14 +172,14 @@ function saveGame(matrix) {
  **/
 function loadGame() {
     const savedMatrix = localStorage.getItem('taquinMatrix');
-    //JSON.parse(savedMatrix)tconvertir cette chaîne JSON en un objet JavaScript (la matrice)
+    // JSON.parse(savedMatrix)tconvertir cette chaîne JSON en un objet JavaScript (la matrice)
+   
     return savedMatrix ? JSON.parse(savedMatrix) : null;
 }
 
 /**
  * Réinitialise le jeu :
- * Vide le local storage 
- * cree la matrice et l'affiche 
+ * Vide le local storage, cree la matrice et l'affiche 
  **/
 function resetGame() {
     localStorage.removeItem('taquinMatrix');

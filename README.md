@@ -1,101 +1,213 @@
-# Jeu du Taquin
+# 🧩 Jeu du Taquin (Puzzle) 
 
-Le jeu du taquin, également appelé puzzle de 15 ou jeu de glissière, est un jeu de plateau où le joueur doit réorganiser les pièces numérotées dans l'ordre chronologique en les faisant glisser sur une grille. 
+Le jeu du taquin, également appelé **puzzle de 15** ou **jeu de glissière**, est un jeu de plateau où le joueur doit réorganiser les pièces numérotées dans l'ordre croissant en les faisant glisser sur une grille. 
 
-Ce jeu est codé en JavaScript. Enjoy : [Taquin](https://taquin-ten.vercel.app/)
+Ce jeu a été codé en JavaScript et est déployé sur Vercel: **[jouer en ligne au Taquin](https://taquin-ten.vercel.app/)**
 
+---
 
-## 1. Créer la function randomNumbers() 
+## Aperçu 
 
-- Pour avoir les chiffres de 1 à 15 aléatoirement sans doublon dans un tableau numbers[]
+<span style="display: flex;">
+ <img src="./images/taquin_desktop.svg" alt="Aperçu du jeu desktop" style="margin-right: 2rem;" />
+ <img src="./images/taquin_mobile.svg" alt="Aperçu du jeu mobile" />
+</span>
 
+---
 
-
-## 2. Créer la matrice de jeu avec la fonction createMatrix()
-
-- tableau à 2 dimensions (données organisées en lignes et colonnes)
-
-`tab = [
-    [1, 2, 3],
-    [4, 5, 6]
-]`
-
-- elle doit contenir 4 lignes et 4 colonnes (variables globales rows & cols)
-- à la dernière ligne, dernière colonne mettre 0 
-- sinon remplir la matrice des nombres aléatoires 
-
-
-
-## 3. Créer la fonction displayGridHTML() qui affiche la grille de jeu avec les numéros 
-
-- Affiche la grille de jeu dans la table HTML 
-- Parcours la matrice 
-- Récupère chaque cellule/case du jeu et y met le numéro de la matrice 
-
-
-
-## 4. Créer la function findSpaceEmpty() pour troouver l'espace vide 
-
-- Parcours la grille de jeu
-- Si la case a la valeur 0 de la matrice 
-- Retourne le numéro de la case (ex: 15) i=3 et j=3
-
-
-
-## 5. Créer un évènement JS sur les flèches du clavier 'keydown' 
+## 1. Installation 
 
 ```
-document.addEventListener('keydown', function(event){
-    processKey(event); 
-})
+git clone `https://github.com/Melissa-code/taquin.git`
+cd taquin
+Ouvrir le fichier index.html dans le navigateur pour commencer à jouer
+```
+---
+
+## 2. Technologies utilisées
+
+- **JavaScript** pour la logique du jeu
+- **HTML** pour la structure de la page
+- **CSS** pour le design et la mise en page
+- **Local Storage** pour la sauvegarde et la reprise de la partie
+
+---
+
+## 3. Architecture et Patterns
+
+### 3.1. Structure des fichiers :
+```
+taquin/
+│── index.html  # Structure de la page
+│── style.css  # Design du jeu
+│── main.js   # Logique du jeu
 ```
 
+### 3.2. Modèle de conception :
+
+Le projet suit un pattern modulaire séparant la logique du jeu en fonctions indépendantes pour améliorer la maintenabilité et l'extensibilité du code: 
+
+- **Modèle (Data)** : matrice de jeu (grid)
+- **Vue** : displayGridHTML() pour l'affichage dynamique
+- **Contrôleur** : processKey(event) pour gérer les interactions
+
+---
+
+## 4. Fonctionnalités principales
+
+### 4.1. Génération des nombres aléatoires (randomNumbers())
+
+Crée un tableau de nombres de 1 à 15 mélangés de manière aléatoire.
+
+Utilise **l'algorithme de Fisher-Yates** pour un mélange sans doublon.
 
 
-## 6. Créer la function processKey() pour déplacer les fleches 
+### 4.2. Création de la matrice de jeu (createMatrix())
 
-- Trouve la case vide 
-- Affecte les valeurs de i et j à la matrice 
-- Switch sur les fleches 
-- Déplace la case dans la direction de fleche et déplace la case 0 en sens inverse 
+Génère une grille 4×4 avec les nombres aléatoires (tableau à 2 dimensions: les données sont organisées en lignes et colonnes).
+
+La dernière case (3,3) est mise à 0 pour représenter l'espace vide.
+
+```
+const grid = [
+  [5, 3, 1, 7],
+  [9, 2, 6, 4],
+  [13, 10, 12, 8],
+  [14, 11, 15, 0] // 0 représente l'espace vide
+];
+```
+
+### 4.3. Affichage de la grille (displayGridHTML())
+
+Convertit la matrice en tableau HTML interactif (dans `<table>`).
+
+Met à jour l'affichage après chaque déplacement (n° de la matrice dans la case).
 
 
+### 4.4. Détection de l’espace vide (findSpaceEmpty())
 
-## 7. Créer la fonction checkGrid(matrix)
+Parcourt la matrice et retourne la position (i, j) du 0.
 
-- Vérifie que la dernière case est vide (0)
-- Vérifie les nombres sont bien dans l'ordre (1 2 3 -> 15) 
+
+### 4.5. Déplacement des cases (processKey(event))
+
+Capture les touches ArrowUp, ArrowDown, ArrowLeft, ArrowRight.
+
+Déplace le 0 en échangeant avec une case adjacente.
+
+
+### 4.6. Vérification de victoire (checkGrid(matrix))
+
+Vérifie si les nombres sont dans l'ordre croissant de 1 à 15 avec 0 à la fin.
+
+La condition générale utilisée :
+
+`matrix[i][j] = j + 1 + i * 4;`
+
+car
 
 ```
 i=0 et j=0 : case 1
 i=0 et j=1 : case 2
 i=0 et j=2 : case 3
 i=0 et j=3 : case 4 -> donc matrice[i][j] = j+1 +0 
-
 i=1 et j=0 : case 5 
 i=1 et j=1 : case 6 -> donc matrice[i][j] = j+1 +4
-
 i=2 et j=0 : case 9 -> donc matrice[i][j] = j+1 +8
-
 i=3 j=0 : case 13 -> donc matrice[i][j] = j+1 + 12 
-
-donc si on généralise, la formule est :  matrice[i][j] = j+1 + i*4
+**donc si on généralise, la formule est :  matrice[i][j] = j+1 + i*4**
 ```
 
+Exemple :
+```
+1  2  3  4  
+5  6  7  8  
+9 10 11 12  
+13 14 15 0  
+```
+
+### 4.7. Sauvegarde et chargement de partie (saveGame() et loadGame())
+
+Stocke la grille dans **Local Storage** pour conserver la progression.
+
+Recharge la partie après un rafraîchissement.
 
 
-## 8. Créer la fonction saveGame(matrix)
+### 4.8. Réinitialisation du jeu (resetGame())
 
-- pour sauvegarder le jeu dans le local storage 
+Efface les données du Local Storage et recrée une grille de jeu aléatoire.
 
+---
 
+## 5. Algorithmique du jeu
 
-## 9. Créer la fonction loadGame() 
+### 5.1. Mélange des tuiles - Algorithme de Fisher-Yates
 
-- pour réafficher le jeu depuis le local storage 
+L’algorithme garantit que chaque permutation possible a une probabilité égale d’être générée :
 
+```
+function randomNumbers() {
+    let numbers = [...Array(15).keys()].map(x => x + 1);
+    for (let i = numbers.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+    }
+    return numbers;
+}
+```
 
+### 5.2. Déplacement des tuiles - Gestion des indices
 
-## 10. Créer la fonction resetGame() 
+La position (i, j) de la case vide est trouvée.
 
-- pour réinitialiser le jeu et effacer la donnée dans le local storage 
+L’échange se fait selon la direction choisie.
+
+```
+switch (event.key) {
+  case 'ArrowUp':    swap(i, j, i + 1, j); break;
+  case 'ArrowDown':  swap(i, j, i - 1, j); break;
+  case 'ArrowLeft':  swap(i, j, i, j + 1); break;
+  case 'ArrowRight': swap(i, j, i, j - 1); break;
+}
+```
+
+swap : échanger deux cases dans la matrice du jeu:
+```
+function swap(i, j, x, y) {
+    [grid[i][j], grid[x][y]] = [grid[x][y], grid[i][j]];
+}
+```
+
+### 4.3. Vérification de la grille - Formule mathématique
+
+La position correcte d’un nombre n dans une matrice 4×4 est définie par :
+
+`expectedValue = j + 1 + i * 4;`
+
+Si toutes les cases sont bien positionnées et que `matrix[3][3] == 0` alors la partie est gagnée.
+
+---
+
+## 5. Conclusion et objectif pédagogique
+
+Le développement de ce jeu permet de voir plusieurs concepts fondamentaux en programmation et algorithmique :
+
+- **Structures de données:** manipulation de matrices (array[][]) pour représenter la grille de jeu.
+
+- **Algorithmes de mélange:** implémentation de Fisher-Yates pour générer une disposition aléatoire jouable.
+
+- **Détection et gestion des mouvements:** utilisation des événements clavier (keydown) et gestion des déplacements dans un tableau 2D.
+
+- **Vérification d’un état de victoire:** comparaison de la grille actuelle avec l’état final attendu.
+
+- **Stockage des données:** utilisation du Local Storage pour sauvegarder la progression.
+
+- **Amélioration continue:** possibilité d’ajouter des fonctionnalités avancées comme un solveur automatique (trouver la meilleure suite de déplacements pour résoudre le puzzle sans intervention humaine) basé sur les 2 algorithmes A ou BFS,  souvent utilisés dans l’intelligence artificielle et la recherche opérationnelle pour résoudre des problèmes de cheminement et d’optimisation: 
+    - **A (A-Star Algorithm)**:  algorithme de recherche heuristique qui trouve le chemin optimal vers la solution en évaluant les déplacements les plus prometteurs.
+    - **BFS (Breadth-First Search)**: algorithme de recherche en largeur qui explore toutes les possibilités niveau par niveau jusqu’à trouver la solution. Il garantit de trouver la solution la plus courte mais peut être lent si l’espace des états est grand.
+
+---
+
+## 6. Author 
+
+- Melissa-code
